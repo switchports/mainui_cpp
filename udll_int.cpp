@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include "extdll_menu.h"
 #include "BaseMenu.h"
 #include "Utils.h"
+#include "menus/TouchButtons.cpp"
 
 ui_enginefuncs_t EngFuncs::engfuncs;
 #ifndef XASH_DISABLE_FWGS_EXTENSIONS
