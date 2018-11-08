@@ -51,6 +51,7 @@ SRCS := \
 	font/BaseFontBackend.cpp			\
 	font/StbFont.cpp				\
 	font/BitmapFont.cpp				\
+	utl/unicode_strtools.cpp	\
 	EventSystem.cpp                                 \
 	BaseMenu.cpp                                    \
 	Btns.cpp                                        \
