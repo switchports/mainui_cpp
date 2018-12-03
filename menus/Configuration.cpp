@@ -37,7 +37,9 @@ public:
 	CMenuOptions() : CMenuFramework("CMenuOptions") { }
 
 	// update dialog
+#ifndef __SWITCH__
 	CMenuYesNoMessageBox msgBox;
+#endif
 };
 
 static CMenuOptions	uiOptions;
@@ -51,10 +53,12 @@ void CMenuOptions::_Init( void )
 {
 	banner.SetPicture( ART_BANNER );
 
+#ifndef __SWITCH__
 	msgBox.SetMessage( "Check the Internet for updates?" );
 	SET_EVENT( msgBox.onPositive, UI_OpenUpdatePage( false, true ) );
 
 	msgBox.Link( this );
+#endif
 
 	AddItem( background );
 	AddItem( banner );
@@ -68,8 +72,13 @@ void CMenuOptions::_Init( void )
 		PC_TOUCH, UI_Touch_Menu, QMF_NOTIFY );
 	AddButton( "Gamepad",  "Change gamepad axis and button settings",
 		PC_GAMEPAD, UI_GamePad_Menu, QMF_NOTIFY );
+#ifdef __SWITCH__
+	AddButton( "Switch",  "Change switch port related settings",
+		NULL, UI_Switch_Menu, QMF_NOTIFY );
+#else
 	AddButton( "Update",   "Check for updates",
 		PC_UPDATE, msgBox.MakeOpenEvent(), QMF_NOTIFY );
+#endif
 	AddButton( "Done",     "Go back to the Main menu",
 		PC_DONE, VoidCb( &CMenuOptions::Hide ), QMF_NOTIFY );
 }

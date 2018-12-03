@@ -295,6 +295,9 @@ void UI_TouchButtons_AddButtonToList( const char *name, const char *texture, con
 void UI_TouchButtons_GetButtonList();
 void UI_GamePad_Menu( void );
 void UI_Zoo_Menu( void );
+#ifdef __SWITCH__
+void UI_Switch_Menu( void );
+#endif
 
 bool UI_AdvUserOptions_IsAvailable( void );
 void UI_AdvUserOptions_Menu( void );

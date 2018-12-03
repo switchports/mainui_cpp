@@ -39,6 +39,7 @@ SRCS := \
 	menus/PlayerSetup.cpp                           \
 	menus/SaveLoad.cpp                              \
 	menus/ServerBrowser.cpp                         \
+	menus/SwitchOptions.cpp                         \
 	menus/TouchButtons.cpp                          \
 	menus/Touch.cpp                                 \
 	menus/TouchEdit.cpp                             \
