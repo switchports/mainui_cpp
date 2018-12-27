@@ -19,6 +19,9 @@ GNU General Public License for more details.
 #include "Field.h"
 #include "Utils.h"
 
+#ifdef __SWITCH__
+#include <switch.h>
+#endif
 
 CMenuField::CMenuField() : BaseClass(), szBuffer()
 {
@@ -140,6 +143,27 @@ CMenuField::Key
 */
 const char *CMenuField::Key( int key, int down )
 {
+#ifdef __SWITCH__
+	if ( key == K_ENTER )
+	{
+		Result rc=0;
+		char con_input[50] = {0};
+
+		SwkbdConfig kbd;
+    	rc = swkbdCreate(&kbd, 0);
+
+		if (R_SUCCEEDED(rc)) {
+			swkbdConfigMakePresetDefault(&kbd);
+
+			rc = swkbdShow(&kbd, con_input, sizeof(con_input));
+
+			if (R_SUCCEEDED(rc)) {
+				Q_strncpy(szBuffer, con_input, sizeof(szBuffer));
+			}
+			swkbdClose(&kbd);
+		}
+	}
+#else
 	int	len;
 	int dummy;
 
@@ -274,6 +298,7 @@ const char *CMenuField::Key( int key, int down )
 				iCursor = len;
 		}
 	}
+#endif
 
 	SetCvarString( szBuffer );
 	_Event( QM_CHANGED );

@@ -1,3 +1,7 @@
+ifeq ($(strip $(DEVKITPRO)),)
+$(error "Please set DEVKITPRO in your environment. export DEVKITPRO=<path to>/devkitpro")
+endif
+
 SRCS := \
 	controls/Framework.cpp                          \
 	controls/BaseItem.cpp                           \
@@ -65,14 +69,14 @@ SRCS := \
 
 OBJS += $(SRCS:.cpp=.o)
 
-LIBS = -lc -lm -lstdc++
+LIBS = -lc -lm -lstdc++ -lnx
 
 PREFIX    = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf
 CC        = $(PREFIX)-gcc
 CXX       = $(PREFIX)-g++
 AR        = $(PREFIX)-ar
 
-INCLUDES = -I. -I../common -I../pm_shared -I../engine -I../engine/common -I../utils/vgui/include -Imenus -Icontrols -Ifont -Iutl -Imodel
+INCLUDES = -I. -I../common -I../pm_shared -I../engine -I../engine/common -I../utils/vgui/include -Imenus -Icontrols -Ifont -Iutl -Imodel -isystem $(DEVKITPRO)/libnx/include
 DEFINES = -D__SWITCH__ -DMAINUI_USE_CUSTOM_FONT_RENDER -DNO_STL
 CFLAGS = -g -nostartfiles -mtune=cortex-a57 -mtp=soft -fno-rtti -fPIC -ftls-model=local-exec -Ofast -Wl,-q -Wfatal-errors -Wno-write-strings -fsigned-char -fno-short-enums -fno-lto $(DEFINES) $(INCLUDES)
 CXXFLAGS = $(CFLAGS) -std=gnu++11 -fno-rtti -fno-exceptions -static-libstdc++ -static-libgcc
