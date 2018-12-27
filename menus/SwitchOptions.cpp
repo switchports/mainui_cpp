@@ -31,6 +31,7 @@ public:
 
 	CMenuTable overclockList;
 	CSwitchOverclockingModel overclockListModel;
+	CMenuCheckBox	consoleCheckbox;
 };
 
 static CSwitchOptions	uiOptions;
@@ -58,12 +59,17 @@ void CSwitchOptions::_Init( void )
 	overclockList.SetupColumn( 0, "Overclocking speed", 1.0f );
 	overclockList.SetModel( &overclockListModel );
 
+	consoleCheckbox.SetNameAndStatus( "Enable Console", "Add the ability to open and use the console" );
+	consoleCheckbox.iFlags |= QMF_NOTIFY;
+	consoleCheckbox.SetCoord( 360, 460 );
+
 	AddItem( background );
 
 	AddButton( "Apply", "Apply changes", PC_OK, VoidCb( &CSwitchOptions::SetConfig ) );
 	AddButton( "Cancel", "Return back to previous menu", PC_CANCEL, VoidCb( &CSwitchOptions::Hide ) );
 
     AddItem( overclockList );
+	AddItem( consoleCheckbox );
 }
 
 /*
@@ -75,6 +81,8 @@ void CSwitchOptions::_VidInit()
 {
     float currentOverclock = EngFuncs::GetCvarFloat( "switch_overclock" );
     overclockList.SetCurrentIndex( currentOverclock );
+
+	consoleCheckbox.LinkCvar( "switch_console" );
 }
 
 /*
@@ -87,6 +95,8 @@ void CSwitchOptions::SetConfig()
     overclockingspeed_t overclock = SWITCH_CPU_OVERCLOCKING_SPEEDS[overclockList.GetCurrentIndex()];
     EngFuncs::CvarSetValue( "switch_overclock", overclock.id );
     EngFuncs::ClientCmd( TRUE, "switch_overclock_update\n" );
+
+	consoleCheckbox.WriteCvar();
 
     CSwitchOptions::Hide(); // so people notice the settings has actually been applied lol
 }
